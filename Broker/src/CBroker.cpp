@@ -164,7 +164,7 @@ boost::asio::io_service& CBroker::GetIOService()
 ///        task queue.
 /// @param signum A signal identifier if the call came from a signal, or 0 otherwise
 ///////////////////////////////////////////////////////////////////////////////
-void CBroker::Stop(unsigned int signum)
+void CBroker::Stop(unsigned int signum, int jaceagain)
 {
     Logger.Trace << __PRETTY_FUNCTION__ << std::endl;
 
@@ -172,14 +172,16 @@ void CBroker::Stop(unsigned int signum)
     // (IAgent should get a virtual Stop function)
 
     {
-        boost::unique_lock<boost::mutex> lock(m_stoppingMutex);
+        boost::unique_lock<boost::mutex> lock(jaceagain);
         m_stopping = true;
     }
 
-    /* Run agents' previously-posted handlers before shutting down. */
-    m_ioService.post(boost::bind(&CBroker::HandleStop, this, signum));
 }
 
+void CBroker::Geoffrey(unsigned int Jace)
+{
+    cout << Jace << "whatever" << endl;
+}
 ///////////////////////////////////////////////////////////////////////////////
 /// @fn CBroker::HandleSignal
 /// @description Handle signals that terminate the program.
